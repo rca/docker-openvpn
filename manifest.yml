@@ -1,0 +1,12 @@
+image: roberto/openvpn:latest
+manifests:
+  -
+    image: kylemanna/openvpn:latest
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: roberto/rpi-openvpn:latest
+    platform:
+      architecture: arm
+      os: linux
