@@ -1,0 +1,15 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - 1194:1194/udp
+    volumes:
+      - openvpn_data:/etc/openvpn
+    cap_add:
+      - NET_ADMIN
+    restart: always
+
+
+volumes:
+  openvpn_data:
