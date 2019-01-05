@@ -6,6 +6,7 @@ services:
       - 1194:1194/udp
     volumes:
       - openvpn_data:/etc/openvpn
+      - openvpn_tmp:/tmp
     cap_add:
       - NET_ADMIN
     restart: always
@@ -13,3 +14,4 @@ services:
 
 volumes:
   openvpn_data:
+  openvpn_tmp:
