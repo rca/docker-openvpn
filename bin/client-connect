@@ -71,7 +71,11 @@ def main():
     openvpn_chain = plan.modify_chain('filter', 'FORWARD_OPENVPN')
 
     openvpn_chain.add_rule(
-        iptables.Rule('-i tun0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT', priority=100)
+        iptables.Rule('-i tun0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT', priority=1000)
+    )
+
+    openvpn_chain.add_rule(
+        iptables.Rule('-o tun0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT', priority=1000)
     )
 
     # rules with higher number priority get added to the chain first
