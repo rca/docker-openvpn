@@ -54,14 +54,14 @@ def main():
     # this will delete an existing table and create it from scratch
     user_chain = plan.add_chain('filter', 'FORWARD_OPENVPN_{}'.format(common_name).upper())
 
-    # accept packets that are related to rules that have been accepted
-    user_chain.add_rule(
-        iptables.Rule('-d {} -m state --state RELATED,ESTABLISHED -j ACCEPT'.format(ip_address), priority=100)
-    )
-
-    user_chain.add_rule(
-        iptables.Rule('-s {} -m state --state RELATED,ESTABLISHED -j ACCEPT'.format(ip_address), priority=100)
-    )
+    # # accept packets that are related to rules that have been accepted
+    # user_chain.add_rule(
+    #     iptables.Rule('-d {} -m state --state RELATED,ESTABLISHED -j ACCEPT'.format(ip_address), priority=100)
+    # )
+    #
+    # user_chain.add_rule(
+    #     iptables.Rule('-s {} -m state --state RELATED,ESTABLISHED -j ACCEPT'.format(ip_address), priority=100)
+    # )
 
     # rules are added with a default priority of 50
     for route in get_routes(common_name):
@@ -69,6 +69,10 @@ def main():
 
     # this will modify an existing chain and create it if it does not exist
     openvpn_chain = plan.modify_chain('filter', 'FORWARD_OPENVPN')
+
+    openvpn_chain.add_rule(
+        iptables.Rule('-i tun0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT', priority=100)
+    )
 
     # rules with higher number priority get added to the chain first
     # when updating an existing chain, rules already in the chain get a priority of 70.
