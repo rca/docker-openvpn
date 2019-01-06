@@ -38,7 +38,8 @@ def get_routes(common_name):
         with open(user_routes_path) as fh:
             content = fh.read()
 
-        routes = content.splitlines()
+        for route in content.splitlines():
+            routes.append(Route(route))
 
     return routes
 
@@ -63,7 +64,7 @@ def main():
 
     # rules are added with a default priority of 50
     for route in get_routes(common_name):
-        user_chain.add_rule('-i tun0 -s {} -d {} -j ACCEPT'.format(ip_address, route))
+        user_chain.add_rule('-i tun0 -s {} -d {} -j {}'.format(ip_address, route.address, route.action))
 
     # this will modify an existing chain and create it if it does not exist
     openvpn_chain = plan.modify_chain('filter', 'FORWARD_OPENVPN')
