@@ -7,6 +7,29 @@ import iptables
 ROUTES_ROOT = '/etc/openvpn/routes'
 
 
+class Route:
+    def __init__(self, route: str):
+        self.action = None
+        self.address = None
+
+        self._parse_route(route)
+
+    def __str__(self):
+        return self.address
+
+    def _parse_route(self, route: str):
+        idx = 0
+
+        if route[0] == '+':
+            self.action = 'ACCEPT'
+            idx = 1
+        elif route[0] == '-':
+            self.action = 'DROP'
+            idx = 1
+
+        self.address = route[idx:].strip()
+
+
 def get_routes(common_name):
     routes = []
 
