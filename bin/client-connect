@@ -48,9 +48,7 @@ def main():
     # rules with higher number priority get added to the chain first
     # when updating an existing chain, rules already in the chain get a priority of 70.
     # being added is compared to existing rules and will be added if missing or left alone.
-    # openvpn_chain.add_rule(iptables.Rule('! -i tun0 -j RETURN', priority=100))
     openvpn_chain.add_rule(user_chain.jump)
-    # openvpn_chain.add_rule(iptables.Rule('-j DROP', priority=10))
 
     forward_chain = plan.modify_chain('filter', 'FORWARD')
     forward_chain.add_rule(openvpn_chain.jump)
