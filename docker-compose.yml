@@ -11,7 +11,24 @@ services:
       - NET_ADMIN
     restart: always
 
+  dns:
+    image: rreboto/docker-openvpn-dns:latest
+    environment:
+      - DOMAIN
+    # ports:
+    #   - 53:53/udp
+    volumes:
+      - openvpn_tmp:/tmp
+      - partial_conf_dir:/etc/dnsmasq.d
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/vpnhosts"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: always
+
 
 volumes:
   openvpn_data:
   openvpn_tmp:
+  partial_conf_dir:
