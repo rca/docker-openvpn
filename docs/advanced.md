@@ -26,6 +26,7 @@ In certain instances, it's desirable to only allow users limited access to hosts
 To enable per-user routes, add the following to `/etc/openvpn/openvpn.conf`:
 
 ```
+script-security 2
 client-connect /usr/local/bin/client-connect
 ```
 
